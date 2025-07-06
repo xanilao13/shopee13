@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Itens Shopee</title>
+  <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #000;
+      --card-bg: #fff;
+      --tooltip-bg: rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #fff;
+      --card-bg: #2e2e2e;
+      --tooltip-bg: rgba(255, 255, 255, 0.2);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #ff5722;
+      font-size: 1.8rem;
+    }
+
+    .toggle-theme {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      background: #ff5722;
+      color: #fff;
+      font-size: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #searchInput {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 15px auto;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .item {
+      position: relative;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+      background-color: var(--card-bg);
+    }
+
+    .item:hover {
+      transform: scale(1.03);
+    }
+
+    .item img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--tooltip-bg);
+      color: #fff;
+      font-size: 14px;
+      padding: 5px;
+      display: none;
+    }
+
+    .item:hover .tooltip {
+      display: block;
+    }
+
+    #toTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff5722;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      .tooltip {
+        font-size: 12px;
+        padding: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🛒 Meus Produtos na Shopee</h1>
+  <button class="toggle-theme" onclick="toggleTheme()">🌙 Alternar Tema</button>
+  <input type="text" id="searchInput" placeholder="🔎 Buscar produto..." onkeyup="filtrarItens()">
+
+  <div class="container" id="itemContainer">
+    <!-- Itens serão adicionados pelo JS -->
+  </div>
+
+  <button id="toTopBtn" onclick="scrollToTop()">🔝</button>
+
+  <script>
+    const items = [
+      {
+        nome: "Camisa Country Masculina",
+        imagem: "https://example.com/camisa.jpg",
+        link: "https://shope.ee/example1"
+      },
+      {
+        nome: "Bota Estilo Texano",
+        imagem: "https://example.com/bota.jpg",
+        link: "https://shope.ee/example2"
+      },
+      {
+        nome: "Jogo De Chave Catraca Caixa De Ferramentas Completa Reversível",
+        imagem: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-m2yspwynltjpba@resize_w1080_nl.webp",
+        link: "https://s.shopee.com.br/9KWnWshU14"
+      }
+      ];
+
+    const container = document.getElementById('itemContainer');
+
+    function renderizarItens(filtro = '') {
+      container.innerHTML = '';
+      items.forEach(item => {
+        if (item.nome.toLowerCase().includes(filtro.toLowerCase())) {
+          const div = document.createElement('div');
+          div.className = 'item';
+          div.innerHTML = `
+            <a href="${item.link}" target="_blank">
+              <img src="${item.imagem}" alt="${item.nome}">
+              <div class="tooltip">${item.nome}</div>
+            </a>
+          `;
+          container.appendChild(div);
+        }
+      });
+    }
+
+    renderizarItens();
+
+    function filtrarItens() {
+      const filtro = document.getElementById('searchInput').value;
+      renderizarItens(filtro);
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    const toTopBtn = document.getElementById("toTopBtn");
+
+    window.onscroll = function () {
+      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        toTopBtn.style.display = "block";
+      } else {
+        toTopBtn.style.display = "none";
+      }
+    };
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
